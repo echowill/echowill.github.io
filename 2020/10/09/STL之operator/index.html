@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>STL之operator | echo</title><meta name="keywords" content="STL"><meta name="author" content="echo"><meta name="copyright" content="echo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="STL之操作符重载(operator)C++中规定不能重载的操作符有：运算符 **::**（作用域解析）、**.**（成员访问）、**.\***（通过成员指针的成员访问）及 **?:**（三元条件）。 不能创建新运算符，例如 ***\***、**&lt;&gt;** 或 **&amp;|**。 运算符 **&amp;&amp;** 与 **||** 的重载失去短路求值。 重载的运算符 **-&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL之operator">
+<meta property="og:url" content="http://example.com/2020/10/09/STL%E4%B9%8Boperator/index.html">
+<meta property="og:site_name" content="echo">
+<meta property="og:description" content="STL之操作符重载(operator)C++中规定不能重载的操作符有：运算符 **::**（作用域解析）、**.**（成员访问）、**.\***（通过成员指针的成员访问）及 **?:**（三元条件）。 不能创建新运算符，例如 ***\***、**&lt;&gt;** 或 **&amp;|**。 运算符 **&amp;&amp;** 与 **||** 的重载失去短路求值。 重载的运算符 **-&amp;gt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://p5.qhimg.com/bdm/0_0_100/t01c4d344ec69e903dc.jpg">
+<meta property="article:published_time" content="2020-10-09T05:12:05.000Z">
+<meta property="article:modified_time" content="2020-10-09T05:12:39.450Z">
+<meta property="article:author" content="echo">
+<meta property="article:tag" content="STL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://p5.qhimg.com/bdm/0_0_100/t01c4d344ec69e903dc.jpg"><link rel="shortcut icon" href="http://p8.qhimg.com/bdm/800_600_100/t012b0a4dba0add8b86.jpg"><link rel="canonical" href="http://example.com/2020/10/09/STL%E4%B9%8Boperator/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-10-09 13:12:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'true'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1602674028&amp;di=d172ead1852b69507d79279bf80efc54&amp;imgtype=jpg&amp;er=1&amp;src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202009%2F15%2F20200915202836_6632b.thumb.1000_0.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">5</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">4</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#STL%E4%B9%8B%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD-operator"><span class="toc-number">1.</span> <span class="toc-text">STL之操作符重载(operator)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%EF%BC%8E-operator-%E7%94%A8%E4%BA%8E%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">1． operator 用于类型转换函数：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%EF%BC%8E-operator-%E7%94%A8%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">2． operator 用于操作符重载：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C%E5%AF%B9operator%E7%9A%84%E6%8F%8F%E8%BF%B0%EF%BC%88%E5%8A%A0%E6%B3%A8%E8%A7%A3%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">3:操作手册对operator的描述（加注解）</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://p5.qhimg.com/bdm/0_0_100/t01c4d344ec69e903dc.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">echo</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">STL之operator</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-10-09T05:12:05.000Z" title="Created 2020-10-09 13:12:05">2020-10-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2020-10-09T05:12:39.450Z" title="Updated 2020-10-09 13:12:39">2020-10-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/STL/">STL</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="STL之操作符重载-operator"><a href="#STL之操作符重载-operator" class="headerlink" title="STL之操作符重载(operator)"></a>STL之操作符重载(operator)</h1><p>C++中规定不能重载的操作符有：运算符 <code>**::**</code>（作用域解析）、<code>**.**</code>（成员访问）、<code>**.\***</code>（通过成员指针的成员访问）及 <code>**?:**</code>（三元条件）。</p>
+<p>不能创建新运算符，例如 <code>***\***</code>、<code>**&lt;&gt;**</code> 或 <code>**&amp;|**</code>。</p>
+<p>运算符 <code>**&amp;&amp;**</code> 与 <code>**||**</code> 的重载失去短路求值。</p>
+<p>重载的运算符 <code>**-&gt;**</code> 必须要么返回裸指针，要么（按引用或值）返回同样重载了运算符 <code>**-&gt;**</code> 的对象。</p>
+<p>不可能更改运算符的优先级、结合方向或操作数的数量。</p>
+<p><code>**&amp;&amp;**</code>、<code>**||**</code> 和 <code>**,**</code>（逗号）在被重载时失去其特殊的<a href="chm://7ed7481ba16eb721d765f7f75d4bbbbe/chmhelp/cpp-language-eval_order.html">定序性质</a>，并且即使不使用函数调用记法，也表现为与常规的函数调用相似。</p>
+<p>除了上述限制外，语言对重载运算符的所作所为或返回类型（它不参与重载决议）上没有其他任何制约，但通常期待重载的运算符表现尽可能与内建运算符相似：期待 operator+ 对其实参进行相加而非相乘，期待 operator= 进行赋值，如此等等。期待相关的运算符之间的表现也相似（operator+ 与 operator+= 做同一类加法运算）。返回类型为期待使用该运算符的表达式所限制：例如，令赋值运算符按引用返回，以使写出 a = b = c = d 可行，因为内建运算符允许这样做。</p>
+<p>转换函数的名称是类型转换的目标类型，因此，不必再为它指定返回值类型；转换函数是被用于本类型的数值或变量转换为其他的类型，也不必带参数</p>
+<p>在写这篇文章之前，让我们先回顾一下编译器通过匹配过程确定调用哪一个函数的匹配顺序：<br>（1）寻找和使用最符合函数名和参数类型（包括返回值）的函数，若找到则调用；</p>
+<p>（2）否则，寻找一个函数模板，将其实例化产生一个匹配的重载函数，若找到则调用；</p>
+<p>（3）否则，寻找可以通过类型转换进行参数匹配的重载函数，若找到则调用它。</p>
+<p>如果以上步骤均未找到匹配函数，则这个调用是错误的；如果这个调用有多于一个的匹配选译，则调用匹配出现二义性，也是错误的。</p>
+<p>类型转换是将一种类型的值映射为另一种类型的值。类型转换实际上包含有自动隐含和强制的两种。</p>
+<p>**<em>\</em>C语言编译系统提供的内部数据类型的自动隐式转换规则如下：</p>
+<p>****1.程序在执行算术运算时，低类型可以转换为高类型。</p>
+<p>2.在赋值表达式中，右边表达式的值自动隐式转换为左边变量的类型，并赋值给它。</p>
+<p>3.当在函数调用时，将实参值赋给形参，系统隐式地将实参转换为形参的类型后，赋给形参。</p>
+<p>4.函数有返回值时，系统将自动地将返回表达式类型转换为函数类型后，赋值给调用函数。</p>
+<p>在以上情况下，系统会进行隐式转换的。当在程序中发现两个数据类型不相容时，又不能自动完成隐式转换，则将出现编译错误。例如：<br>　　　int* p = 100;<br>在这种情况下，编译程序将报错，为了消除错误，可以进行如下所示的强制类型转换：<br>　　　int* p = (int *)100;<br>将整型数100显式地转换成指针类型。</p>
+<p>构造函数具有类型转换功能</p>
+<p>在实际应用中，当类定义中提供了单个参数的构造函数时，该类便提供了一种将其他数据类型的数值或变量转换为用户所定义数据类型的方法。因此，可以说单个参数的构造函数提供了数据转换的功能。下面通过一个例子进一步说明单参数构造函数的类型转换功能。</p>
+<p>代码如下:</p>
+<p>#include<br>classA<br>{<br>public:<br>A(){ m=0; }<br>A(doublei) { m=i; }<br>voidprint() { cout&lt;&lt;M&lt;&lt;endl}<br>private:<br>doublem;<br>};</p>
+<p>voidmain()<br>{<br>Aa(5);<br>a=10; //a与10是不同的数据类型<br>a.print();<br>}</p>
+<p>程序的输出结果为：<br>　　10<br>在该程序中，赋值语句a=10;中，赋值号两边数值10和对象a是两上不相容的数据类型，可是它却能顺利通过编译程序，并且输出显示正确结果，其主要原因是得益于单参数的构造函数。编译系统选通过标准数据类型转换，将整型数值10转换成double型，然后，再通过类中定义的单参数构造函数将double型数值转换为A类类型，最后把它赋值给a。这些转换都是自动隐式完成的。</p>
+<p>**关于上面的程序，补充一点：</p>
+<p>**Aa = 10;<br>和<br>Aa;<br>a= 10;<br>两者是不同的，前者对a进行初使化，编译器会尝试将10隐式转换为A类型，这样将引起a的A(doublei)构造函数直接被调用。<br>后者属于赋值语句，编译器将建立一个临时对象，并将10隐式转换为A类型。如果我们显示调用<br>(A)10;<br>这也将建立一个临时对象，引起A的构造函数被调用。</p>
+<p>还有一点要注意，编译器只会进行一次隐式转换（C时刻库的内置类型如intshort char等）除外，下面的语句说明了这点：<br>m_rst-&gt;GetFields()-&gt;GetItem(nCol)-&gt;Value= (_bstr_t)sValue;<br>上面Value是COM的变体类型，“Value=”将引起operator= (_bstr_t)被调用。如果上面省略(_bstr_t)，编译器将发生错误，因为没有operator= (char*)这样的重载，编译器不会为我们进行两次以上的隐式转换。</p>
+<p>在函数调用过程中，运算符重载和构造也是一个函数调用，如果匹配的函数如无二义性，那么将可以产生一次隐式转换。如果上句的Value变体类只有一个operate= (_bstr_t)，那么既使这样写-&gt;Value= sValue; 编译器也会试图将sValue隐式转换为_bstr_t类型。</p>
+<p>还有一种情况</p>
+<p>代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">classA</span><br><span class="line">&#123;</span><br><span class="line">inta;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">A()&#123; &#125;;</span><br><span class="line">A(int_a) &#123; a = _a; &#125;;</span><br><span class="line"><span class="function">Operator <span class="title">int</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> a; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>有如下调用：</p>
+<p>代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Aa(<span class="number">10</span>);</span><br><span class="line">Aa2 = (<span class="keyword">int</span>)(<span class="keyword">int</span>)a;  <span class="comment">//只相当于Aa2 = (int)a; 因为第一个就近已经转成了int，第二//个就不用再转了</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>比较有意思吧，A类既有将int隐式转换A的构造，也有int()转换函数供强制转换，（int）(int)a将以就近原则的方式进行。如果就近转换失败，编译器将报错。比如：</p>
+<p>代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">classB</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br><span class="line">Aa2 = (B)a;</span><br><span class="line">或</span><br><span class="line">Aa2 = (B)<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>编译器报这样的错误：”errorC2440: “类型转换”:无法从“int”转换为“B””<br>可知，我们自己编写的构造和转换函数多么重要。</p>
+<p>转换函数<br>转换函数又称类型强制转换成员函数，它是类中的一个非静态成员函数。它的定义格式如下：</p>
+<p>代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">　　　<span class="class"><span class="keyword">class</span>&lt;类型说明符1&gt;</span></span><br><span class="line"><span class="class">　　　　&#123;</span></span><br><span class="line">　　　　　<span class="keyword">public</span>:</span><br><span class="line">　　　　　　<span class="keyword">operator</span>&lt;类型说明符<span class="number">2</span>&gt;();</span><br><span class="line">　　　　　　…</span><br><span class="line">　　　　&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这个转换函数定义了由&lt;类型说明符1&gt;到&lt;类型说明符2&gt;之间的映射关系。可见，转换函数是用来将一种类型的数据转换成为另一种类型。下面通过一个例子说明转换函数的功能。</p>
+<p>代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">\<span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"></span><br><span class="line">classRational</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">Rational(intd, <span class="keyword">int</span> n)</span><br><span class="line">&#123;</span><br><span class="line">den= d;</span><br><span class="line">num= n;</span><br><span class="line">&#125;</span><br><span class="line">operatordouble();<span class="comment">//类型转换函数</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">intden, num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Rational::operatordouble()</span><br><span class="line">&#123;</span><br><span class="line">returndouble(den)/<span class="keyword">double</span>(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">voidmain()</span><br><span class="line">&#123;</span><br><span class="line">Rationalr(<span class="number">5</span>, <span class="number">8</span>);</span><br><span class="line">doubled = <span class="number">4.7</span>;</span><br><span class="line">d+= r; <span class="comment">//这句将调用隐式转换，相当于d= (double)r;</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;d&lt;&lt;ENDL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>程序输出结果：<br>5.325</p>
+<p>由程序可知，d是一个double型数值，r是Rational类的对象，这两个不同类型的数据进行加法之所以能够进行是得益于转换函数operatordouble()。为使上述加法能够进行，编译系统先检查类Rational的说明，看是否存在在下转换函数能够将Rational类型的操作数转换为double类型的操作数。由于Rational类中说明了转换函数operatordouble()，它可以在程序运行时进行上述类型转换，因此，该程序中实现了d=r;的操作。</p>
+<p><strong><em>\</em>定义转换函数时应注意如下几点：<br>**</strong>(1)转换函数是用户定义的成员函数，但它要是非静态的。<br>(2)转换函数的不可以有返回值。（意思是声明中不可以有返回值）<br>(3)转换函数也不带任何参数。<br>(4)转换函数函数还不能定义为友元函数。</p>
+<p>转换函数的名称是类型转换的目标类型，因此，不必再为它指定返回值类型；转换函数是被用于本类型的数值或变量转换为其他的类型，也不必带参数。</p>
+<p>类中的构造函数完成其他类型到类类型的转换，而重载强制转换完成类类型到其他类型的转换。</p>
+<h2 id="1．-operator-用于类型转换函数："><a href="#1．-operator-用于类型转换函数：" class="headerlink" title="1． operator 用于类型转换函数："></a>1． operator 用于类型转换函数：</h2><p>类型转换函数的特征：</p>
+<p>1） 型转换函数定义在源类中；<br>2） 须由 operator 修饰，函数名称是目标类型名或目标类名；<br>3） 函数没有参数，没有返回值，但是有return<br>语句，在return语句中返回目标类型数据或调用目标类的构造函数。</p>
+<p>类型转换函数主要有两类：</p>
+<p>1） 对象向基本数据类型转换：</p>
+<p>对象向不同类的对象的转换：</p>
+<p>例程1：<br>//通过类型转换函数求半径为5的圆的面积<br>//并将其存储在float型变量中打印输出</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">＃i nclude &lt;iostream&gt;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CArea</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">float</span> area;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    CArea()</span><br><span class="line">    &#123;</span><br><span class="line">       area=<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    CArea(<span class="keyword">float</span> a)      <span class="comment">//重载含有一个参数的构造函数</span></span><br><span class="line">    &#123;</span><br><span class="line">       area=a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getArea</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;area&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setArea</span><span class="params">(<span class="keyword">float</span> a)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       area=a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">float</span><span class="params">()</span>      <span class="comment">//类型转换函数</span></span></span><br><span class="line"><span class="function">    </span>&#123;               </span><br><span class="line"><span class="comment">//将面积类对象转换为float型数据</span></span><br><span class="line">       <span class="keyword">return</span> area;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CCircle</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">float</span> R;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getR</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;R&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setR</span><span class="params">(<span class="keyword">float</span> r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       R=r;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">CArea</span><span class="params">()</span>  <span class="comment">//类型转换函数</span></span></span><br><span class="line"><span class="function">    </span>&#123;                 <span class="comment">//将圆类对象转为面积类对象</span></span><br><span class="line">       <span class="keyword">float</span> area=<span class="number">3.1415926</span>*R*R;</span><br><span class="line">       <span class="keyword">return</span> (CArea(area));</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    CCircle cir;</span><br><span class="line">    CArea are;</span><br><span class="line">    <span class="keyword">float</span> a;</span><br><span class="line"></span><br><span class="line">    cir.setR(<span class="number">5</span>);</span><br><span class="line">    cir.getR();           <span class="comment">//打印圆的半径</span></span><br><span class="line">    are.getArea();      <span class="comment">//打印转换前的面积         </span></span><br><span class="line">  </span><br><span class="line">  are=cir;         <span class="comment">//将圆类对象转为面积类对象</span></span><br><span class="line">  are.getArea();      <span class="comment">//打印转换后的面积  </span></span><br><span class="line">  a=are;             <span class="comment">//将面积类对象转换为float型数据</span></span><br><span class="line">  <span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;          </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2．-operator-用于操作符重载："><a href="#2．-operator-用于操作符重载：" class="headerlink" title="2． operator 用于操作符重载："></a>2． operator 用于操作符重载：</h2><p>操作符重载的概念：</p>
+<p> 将现有操作符与一个成员函数相关联，并将该操作符与其成员对象（操作数）一起使用。</p>
+<p>注意事项：</p>
+<p>1） 重载不能改变操作符的基本功能，以及该操作符的优先级顺序。</p>
+<p>2） 重载不应改变操作符的本来含义。</p>
+<p>3） 只能对已有的操作符进行重载，而不能重载新符号。</p>
+<p>4） 操作符重载只对类可用。</p>
+<p>5） 以下运算符不能被重载：</p>
+<p>.    原点操作符（成员访问符）</p>
+<p>*   指向成员的指针</p>
+<p>::    作用域解析符</p>
+<p>? :   问号条件运算符</p>
+<p>sizeof 操作数的字节数</p>
+<p>  操作符函数的一般格式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">return_type <span class="keyword">operator</span> <span class="title">op</span><span class="params">(argument <span class="built_in">list</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>   return_type：返回类型（要得到什么）</p>
+<p>​    op：要重载的操作符</p>
+<p>   argument list：参数列表（操作数有哪些）</p>
+<p>例程2：<br>//重载大于号操作符比较两个人的工资</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">＃i nclude &lt;iostream&gt;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">employee</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> salary;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setSalary</span><span class="params">(<span class="keyword">int</span> s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       salary=s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getSalary</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;salary&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &gt;(<span class="keyword">const</span> employee &amp; e)<span class="comment">//重载大于号操作符</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="keyword">if</span>(salary &gt; e.salary)</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">       <span class="keyword">else</span></span><br><span class="line">           <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    employee emp1,emp2;</span><br><span class="line">    emp1.setSalary(<span class="number">1000</span>);</span><br><span class="line">    emp2.setSalary(<span class="number">2000</span>);</span><br><span class="line">    <span class="keyword">if</span> (emp1 &gt; emp2)</span><br><span class="line">    &#123;</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;emp1比emp2工资高&quot;</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;emlp1没有emp2工资高&quot;</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-操作手册对operator的描述（加注解）"><a href="#3-操作手册对operator的描述（加注解）" class="headerlink" title="3:操作手册对operator的描述（加注解）"></a>3:操作手册对operator的描述（加注解）</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span>::<span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> s1;</span><br><span class="line">    <span class="comment">// 用户定义的复制赋值，复制并交换形式</span></span><br><span class="line">    A&amp; <span class="keyword">operator</span>=(A other)<span class="comment">//交换数据</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;copy assignment of A\n&quot;</span>;</span><br><span class="line">        <span class="built_in">std</span>::swap(n, other.n);</span><br><span class="line">        <span class="built_in">std</span>::swap(s1, other.s1);</span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;the string s1 value is &quot;</span>&lt;&lt;s1&lt;&lt;<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> :</span> A<span class="comment">//c++中特性，其中不声明继承类型struct默认public继承，class默认private继承</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> s2;</span><br><span class="line">    <span class="comment">// 隐式定义的复制赋值</span></span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">C</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>[]&gt; data;</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> size;</span><br><span class="line">    <span class="comment">// 非复制并交换的赋值</span></span><br><span class="line">    C&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> C&amp; other)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 检查自赋值</span></span><br><span class="line">        <span class="keyword">if</span>(&amp;other == <span class="keyword">this</span>)</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        <span class="comment">// 可能时复用存储</span></span><br><span class="line">        <span class="keyword">if</span>(size != other.size)</span><br><span class="line">        &#123;</span><br><span class="line">            data.reset(<span class="keyword">new</span> <span class="keyword">int</span>[other.size]);</span><br><span class="line">            size = other.size;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">std</span>::copy(&amp;other.data[<span class="number">0</span>], &amp;other.data[<span class="number">0</span>] + size, &amp;data[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注意：复制并交换始终导致重分配</span></span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1, a2;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;a1 = a2 calls &quot;</span>;</span><br><span class="line">    a2.s1 = <span class="string">&quot;hell0&quot;</span>;</span><br><span class="line">    a1.print();</span><br><span class="line">    a1 = a2; <span class="comment">// 用户定义的复制赋值</span></span><br><span class="line">    a2.print();</span><br><span class="line">    B b1, b2;</span><br><span class="line">    b2.s1 = <span class="string">&quot;foo&quot;</span>;</span><br><span class="line">    b2.s2 = <span class="string">&quot;bar&quot;</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;b1 = b2 calls &quot;</span>;</span><br><span class="line">    b1 = b2; <span class="comment">// 隐式定义的复制赋值</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;b1.s1 = &quot;</span> &lt;&lt; b1.s1 &lt;&lt; <span class="string">&quot; b1.s2 = &quot;</span> &lt;&lt; b1.s2 &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>声明：operator XX(); 无返回值，XX就是某个类型；</p>
+<p>用法：XX a = (XX)obj; 假设上边SocketAddress非abstract类，例如：SocketAddress sa; int a = (socklen_t)sa; 也就是此时会调用原成员函数operator XX(); 一般返回XX类型值，可以理解成类型转换的重载！</p>
+<p>另外：一个自定义类的 构造函数可以用作隐形的类型转换，例如：Class A { A(int i) { val = i};  private int val;} , A a = 5; 解：5 首先通过构造函数A(int)隐形的转换为A类型，然后调用默认的operator=赋值函数，赋值给a；</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">echo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/10/09/STL%E4%B9%8Boperator/">http://example.com/2020/10/09/STL%E4%B9%8Boperator/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STL/">STL</a></div><div class="post_share"><div class="social-share" data-image="http://p5.qhimg.com/bdm/0_0_100/t01c4d344ec69e903dc.jpg" data-sites="wechat,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/10/09/STL%E4%B9%8B%E4%BB%BF%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E8%AF%A6%E8%A7%A3/"><img class="next-cover" src="http://p4.qhimg.com/bdm/0_0_100/t01698a234f49dbdc57.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">STL之仿函数实现详解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2020/10/09/STL之仿函数实现详解/" title="STL之仿函数实现详解"><img class="cover" src="http://p4.qhimg.com/bdm/0_0_100/t01698a234f49dbdc57.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-09</div><div class="title">STL之仿函数实现详解</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(http://p5.qhimg.com/bdm/0_0_100/t01c4d344ec69e903dc.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 By echo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="false"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":350},"mobile":{"show":true},"log":false});</script></body></html>
