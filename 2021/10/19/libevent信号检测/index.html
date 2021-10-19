@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>libevent信号检测 | echo</title><meta name="keywords" content="libevnet"><meta name="author" content="echo"><meta name="copyright" content="echo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="libevent可以检测系统信号，我们这里以检测SIGINT为例 123456789101112131415161718192021222324#include &quot;common.h&quot;#include &quot;event_config.h&quot;#include &quot;event_base.h&quot;#include &quot;event_signal.h&amp;q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="libevent信号检测">
+<meta property="og:url" content="http://example.com/2021/10/19/libevent%E4%BF%A1%E5%8F%B7%E6%A3%80%E6%B5%8B/index.html">
+<meta property="og:site_name" content="echo">
+<meta property="og:description" content="libevent可以检测系统信号，我们这里以检测SIGINT为例 123456789101112131415161718192021222324#include &quot;common.h&quot;#include &quot;event_config.h&quot;#include &quot;event_base.h&quot;#include &quot;event_signal.h&amp;q">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://p0.qhimg.com/bdm/0_0_100/t01523e547b0c6f586f.jpg">
+<meta property="article:published_time" content="2021-10-19T07:46:11.000Z">
+<meta property="article:modified_time" content="2021-10-19T07:46:29.879Z">
+<meta property="article:author" content="echo">
+<meta property="article:tag" content="libevnet">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://p0.qhimg.com/bdm/0_0_100/t01523e547b0c6f586f.jpg"><link rel="shortcut icon" href="http://p8.qhimg.com/bdm/800_600_100/t012b0a4dba0add8b86.jpg"><link rel="canonical" href="http://example.com/2021/10/19/libevent%E4%BF%A1%E5%8F%B7%E6%A3%80%E6%B5%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: false,
+  postUpdate: '2021-10-19 15:46:29'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'true'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1602674028&amp;di=d172ead1852b69507d79279bf80efc54&amp;imgtype=jpg&amp;er=1&amp;src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202009%2F15%2F20200915202836_6632b.thumb.1000_0.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">48</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">19</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><header class="post-bg" id="page-header" style="background-image: url(http://p0.qhimg.com/bdm/0_0_100/t01523e547b0c6f586f.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">echo</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">libevent信号检测</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-19T07:46:11.000Z" title="发表于 2021-10-19 15:46:11">2021-10-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-19T07:46:29.879Z" title="更新于 2021-10-19 15:46:29">2021-10-19</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">726</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>libevent可以检测系统信号，我们这里以检测SIGINT为例</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;common.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;event_config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;event_base.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;event_signal.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> echo;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">two_sum</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;a + b = &quot;</span>&lt;&lt;a+b&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Callback&lt;<span class="keyword">int</span>&gt;two(two_sum,<span class="number">10</span>,<span class="number">20</span>);</span><br><span class="line">    <span class="keyword">auto</span> methods = event_get_supported_methods();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Base&gt;bases = <span class="built_in">std</span>::make_shared&lt;Base&gt;(<span class="number">9999</span>,listen_callback, two);</span><br><span class="line">    <span class="function">Signal <span class="title">s</span><span class="params">(*(bases.get()),SIGINT, two)</span></span>;</span><br><span class="line">    s.signal_add();</span><br><span class="line">    bases-&gt;start_base_dispatch();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>初始化signal类时传入基础事件上下文，要检测的信号类型，以及信号触发时的回掉函数。</p>
+<p>以下是Signal的实现</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> LIBEVENT_TEST_EVENT_SIGNAL_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LIBEVENT_TEST_EVENT_SIGNAL_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;common.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> echo</span><br><span class="line">&#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Signal</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Signal(Base&amp; base,<span class="keyword">int</span> signal,Callback&lt;<span class="keyword">int</span>&gt;&amp; callback)</span><br><span class="line">    <span class="comment">//基础事件，注册信号，信号触发时要回掉的函数</span></span><br><span class="line">    &#123;</span><br><span class="line">        init_signal = evsignal_new(base.get_instance(), signal, signal_callback, (<span class="keyword">void</span>*)&amp;callback);</span><br><span class="line">        error_nullptr(VNAME(init_signal), init_signal);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">signal_add</span><span class="params">(event* signal)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        error_return_value(<span class="number">0</span>,VNAME(event_add), event_add,signal, <span class="literal">nullptr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">signal_add</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        error_return_value(<span class="number">0</span>,VNAME(event_add), event_add,init_signal, <span class="literal">nullptr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    ~Signal()</span><br><span class="line">    &#123;</span><br><span class="line">        free_source(event_free,init_signal);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">event* <span class="title">get_signal</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        error_nullptr(VNAME(init_signal),init_signal);</span><br><span class="line">        <span class="keyword">return</span> init_signal;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    event* init_signal;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">//LIBEVENT_TEST_EVENT_SIGNAL_H</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>其中evsignal_new函数为信号初始化函数，回初始化好信号的事件上下文，监听的信号，信号触发的回掉函数，以及回掉函数的参数，这里我们依然和之前一样传入包装器callback，以便调用自己的回掉函数。其中的signal_callback是原本触发的信号处理函数，但是里面我们什么也不做，只是调用我们包装器，以便达到扩展的目的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//触发事件的socket,触发的事件类型,传递的事件参数,此处默认传递封装CallBack</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">signal_callback</span><span class="params">(<span class="keyword">int</span> socket,<span class="keyword">short</span> which,<span class="keyword">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="keyword">reinterpret_cast</span>&lt;Callback&lt;<span class="keyword">int</span>&gt;*&gt;(arg)-&gt;instance()&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再往下是一个我弄的一个新的返回值处理的包装器，用于处理返回值异常的情况</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">V</span>,<span class="title">class</span> <span class="title">F</span>,<span class="title">class</span> ...<span class="title">Arg</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">static</span> <span class="title">void</span> <span class="title">error_return_value</span>(<span class="title">V</span> <span class="title">value</span>,<span class="title">const</span> <span class="title">std</span>:</span>:<span class="built_in">string</span>&amp; f_name,F&amp;&amp; fn,Arg&amp;&amp;... arg)</span><br><span class="line"><span class="comment">//value 为函数预期返回值,f_name为debug输出的函数名,需要使用宏VNAME(function_name)，fn为传入函数，arg为传入函数的参数</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">std</span>::invoke(<span class="built_in">std</span>::forward&lt;F&gt;(fn), <span class="built_in">std</span>::forward&lt;Arg&gt;(arg)...))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cerr</span>&lt;&lt;<span class="string">&quot;return value error : &quot;</span>&lt;&lt;__FILE__&lt;&lt;__LINE__&lt;&lt;<span class="string">&quot;:\t&quot;</span>&lt;&lt;f_name</span><br><span class="line">        &lt;&lt;<span class="string">&quot;return value is not expect &quot;</span>&lt;&lt;value&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>资源释放依旧采用的是之前写好的指针类资源回收包装器</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">F</span>,<span class="title">class</span> <span class="title">S</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">static</span> <span class="title">void</span> <span class="title">free_source</span>(<span class="title">F</span>&amp;&amp; <span class="title">fn</span>,<span class="title">S</span>&amp;&amp; <span class="title">arg</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">if</span>(arg) fn(arg);</span><br><span class="line">    arg = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回到libevent的信号注册，一个分为以下几个部分：获取监听事件上下文，注册要监听的信号，将监听信号绑定要监听的事件上，被监听的事件开始运行，相关资源的回收。</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">echo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/10/19/libevent%E4%BF%A1%E5%8F%B7%E6%A3%80%E6%B5%8B/">http://example.com/2021/10/19/libevent%E4%BF%A1%E5%8F%B7%E6%A3%80%E6%B5%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">echo</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/libevnet/">libevnet</a></div><div class="post_share"><div class="social-share" data-image="http://p0.qhimg.com/bdm/0_0_100/t01523e547b0c6f586f.jpg" data-sites="wechat,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/19/libeventepoll-c%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"><img class="prev-cover" src="http://p8.qhimg.com/bdm/0_0_100/t012b0a4dba0add8b86.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">libeventepoll.c源码剖析</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/19/libevent%E5%8F%AF%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/"><img class="next-cover" src="http://p6.qhimg.com/bdm/0_0_100/t01d249c6a93f10c1fd.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">libevent可运行程序</div></div></a></div></nav></article></main><footer id="footer" style="background-image: url(http://p0.qhimg.com/bdm/0_0_100/t01523e547b0c6f586f.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By echo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":350},"mobile":{"show":true},"log":false});</script></body></html>

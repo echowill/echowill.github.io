@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>golang实战笔记1 | echo</title><meta name="keywords" content="Golang"><meta name="author" content="echo"><meta name="copyright" content="echo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="go语言实战第二章读书笔记包包名​    每个文件都必须一个包里面，通常来说包名和文件夹名相同，也就意味着一个文件夹下面的所有文件的包名必须相同的。 ​    例如有以下目录结构 1234567891011sample├── data│   └── data.json├── main.go├── matchers│   └── rss.go└── search    ├── default.go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang实战笔记1">
+<meta property="og:url" content="http://example.com/2021/10/19/golang%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B01/index.html">
+<meta property="og:site_name" content="echo">
+<meta property="og:description" content="go语言实战第二章读书笔记包包名​    每个文件都必须一个包里面，通常来说包名和文件夹名相同，也就意味着一个文件夹下面的所有文件的包名必须相同的。 ​    例如有以下目录结构 1234567891011sample├── data│   └── data.json├── main.go├── matchers│   └── rss.go└── search    ├── default.go">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://p18.qhimg.com/bdm/0_0_100/t0173df002c22d721b4.jpg">
+<meta property="article:published_time" content="2021-10-19T07:47:57.000Z">
+<meta property="article:modified_time" content="2021-10-19T07:48:49.632Z">
+<meta property="article:author" content="echo">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://p18.qhimg.com/bdm/0_0_100/t0173df002c22d721b4.jpg"><link rel="shortcut icon" href="http://p8.qhimg.com/bdm/800_600_100/t012b0a4dba0add8b86.jpg"><link rel="canonical" href="http://example.com/2021/10/19/golang%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B01/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-10-19 15:48:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'true'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1602674028&amp;di=d172ead1852b69507d79279bf80efc54&amp;imgtype=jpg&amp;er=1&amp;src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202009%2F15%2F20200915202836_6632b.thumb.1000_0.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">48</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">19</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#go%E8%AF%AD%E8%A8%80%E5%AE%9E%E6%88%98%E7%AC%AC%E4%BA%8C%E7%AB%A0%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">go语言实战第二章读书笔记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8C%85"><span class="toc-number">2.</span> <span class="toc-text">包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%85%E5%90%8D"><span class="toc-number">2.1.</span> <span class="toc-text">包名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main%E5%8C%85"><span class="toc-number">2.2.</span> <span class="toc-text">Main包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#import"><span class="toc-number">3.</span> <span class="toc-text">import</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%BA%93"><span class="toc-number">3.1.</span> <span class="toc-text">标准库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">4.</span> <span class="toc-text">作用域</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF"><span class="toc-number">6.</span> <span class="toc-text">循环</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#range%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">6.1.</span> <span class="toc-text">range关键字</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AD%E5%8C%85"><span class="toc-number">7.</span> <span class="toc-text">闭包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">8.</span> <span class="toc-text">多返回值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#defer"><span class="toc-number">9.</span> <span class="toc-text">defer</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://p18.qhimg.com/bdm/0_0_100/t0173df002c22d721b4.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">echo</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">golang实战笔记1</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-19T07:47:57.000Z" title="发表于 2021-10-19 15:47:57">2021-10-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-19T07:48:49.632Z" title="更新于 2021-10-19 15:48:49">2021-10-19</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="go语言实战第二章读书笔记"><a href="#go语言实战第二章读书笔记" class="headerlink" title="go语言实战第二章读书笔记"></a>go语言实战第二章读书笔记</h1><h1 id="包"><a href="#包" class="headerlink" title="包"></a>包</h1><h2 id="包名"><a href="#包名" class="headerlink" title="包名"></a>包名</h2><p>​    每个文件都必须一个包里面，通常来说包名和文件夹名相同，也就意味着一个文件夹下面的所有文件的包名<strong>必须</strong>相同的。</p>
+<p>​    例如有以下目录结构</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sample</span><br><span class="line">├── data</span><br><span class="line">│   └── data.json</span><br><span class="line">├── main.go</span><br><span class="line">├── matchers</span><br><span class="line">│   └── rss.go</span><br><span class="line">└── search</span><br><span class="line">    ├── default.go</span><br><span class="line">    ├── feed.go</span><br><span class="line">    ├── match.go</span><br><span class="line">    └── search.go</span><br></pre></td></tr></table></figure>
+
+<p>那么以<strong>search</strong>文件夹为例，文件夹中的文件的包名都应该如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> search</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Main包"><a href="#Main包" class="headerlink" title="Main包"></a>Main包</h2><p>​    main函数会在main包里面出现，同理，main函数是go语言程序的入口地点。但是go语言包中还有另一个函数init()函数，init函数用于初始化整个包，因此假如main包中有init函数，也会先执行init(所有使用到的包中的init,顺序是导入包，初始化包，本包，并非只是main的init)函数在执行main函数。</p>
+<p>​    假如main包中没有main函数，那么构建出来的文件将会以库文件的形式存在，即不会生成可执行文件。</p>
+<h1 id="import"><a href="#import" class="headerlink" title="import"></a>import</h1><p>​    用于导入需要的包，假如需要导入的包很多，可以以以下形式导入包</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> </span><br><span class="line">(</span><br><span class="line"> <span class="string">&quot;packgename1&quot;</span></span><br><span class="line">  <span class="string">&quot;packgename2&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>​    由于go语言不允许导入某个包而不使用，但是我们需要初始化某个包时但又不去使用它，那么应该在导入包名时在其前面加入_，使得go语言编译器接受这个包。例如我们想初始化matchers包。可以使用如下方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">  _ <span class="string">&quot;main/sample/matchers&quot;</span> <span class="comment">// 会调用包中的init()</span></span><br><span class="line">	<span class="string">&quot;main/sample/search&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="标准库"><a href="#标准库" class="headerlink" title="标准库"></a>标准库</h2><p>​    每个代码文件都以 package 关键字开头，随后跟着包的名字。文件夹 search 下的每个代码文件都使用 search 作为包名。例如”fmt”,”log”。与第三方包不同，从标准库中导入代码时，只需要给出要导入的包名。编译器查找包的时候，总是会到 GOROOT 和 GOPATH 环境变量。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GOROOT=&quot;/User/username/go&quot;</span><br><span class="line">GOPATH=&quot;/User/username/spaces/go/projects&quot;</span><br></pre></td></tr></table></figure>
+
+<h1 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h1><p>​    在go语言中，包内<strong>大写字母</strong>开头的函数或者变量名表示外部可见，即可以提供给掉包者使用，<strong>小写字母</strong>开头的函数或者变量着表示仅包内可见，因此go语言不存在什么文件本地变量或本地函数，隔离级别以包进行区分。假如一个公开的函数(大写字母开头的函数)返回了一个不公开的变量(小写字母开头的变量)，外部成员依然是可以访问这个值。</p>
+<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><p>​    在go语言中，所有数值类型都会被初始化为0值，所有非数值类型都会被初始化为nil(nullptr)，对于bool类型来说，零值为false，值得一题的是go语言中的bool类型和数值类型不能直接转化。(0不等于false，非零不等于true)</p>
+<h1 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h1><p>​    go语言中只有for循环，没有while和do while，可以使用for循环来实现while的类型效果。</p>
+<h2 id="range关键字"><a href="#range关键字" class="headerlink" title="range关键字"></a>range关键字</h2><p>​    range通常关键字配合for循环使用，他能保证变量目标容器中的所有元素并且不发生越界，由于range会提供下标索引和copyvalue俩种方式，在实际使用时并非俩者都需要使用的，因此便有了如下这种写法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i,it := <span class="keyword">range</span> arr &#123; <span class="comment">// i为下标，it为copy value</span></span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> _,it := <span class="keyword">range</span> arr &#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以使用_下划线来表示此变量我们忽略，不需要使用，此时编译不会因为该变量未使用而报错。</p>
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>​    go语言支持闭包，也支持匿名闭包，由于声明函数使用func关键字，执行时只需要配合()即可，因此有了如下两种使用形式</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="function"><span class="keyword">func</span> <span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="built_in">print</span>(<span class="string">&quot;闭包1&quot;</span>)</span><br><span class="line">	&#125;()<span class="comment">//直接执行</span></span><br><span class="line">	f := <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; <span class="comment">//声明</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="string">&quot;闭包2&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	f()<span class="comment">//调用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="多返回值"><a href="#多返回值" class="headerlink" title="多返回值"></a>多返回值</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>)</span></span> &#123; <span class="comment">//(参数)(返回值)</span></span><br><span class="line">	a,b:=<span class="number">1</span>,<span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> a,b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="defer"><a href="#defer" class="headerlink" title="defer"></a>defer</h1><p>保证语句在函数返回时执行</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">&quot;defer&quot;</span>) <span class="comment">// 最后执行</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;start&quot;</span>)</span><br><span class="line">	a,b:=<span class="number">1</span>,<span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> a,b</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">echo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/10/19/golang%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B01/">http://example.com/2021/10/19/golang%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">echo</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Golang/">Golang</a></div><div class="post_share"><div class="social-share" data-image="http://p18.qhimg.com/bdm/0_0_100/t0173df002c22d721b4.jpg" data-sites="wechat,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/10/19/libeventepoll-c%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"><img class="next-cover" src="http://p8.qhimg.com/bdm/0_0_100/t012b0a4dba0add8b86.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">libeventepoll.c源码剖析</div></div></a></div></nav></article></main><footer id="footer" style="background-image: url(http://p18.qhimg.com/bdm/0_0_100/t0173df002c22d721b4.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By echo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":350},"mobile":{"show":true},"log":false});</script></body></html>
