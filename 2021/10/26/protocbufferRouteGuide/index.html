@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>protocbufferRouteGuide | echo</title><meta name="keywords" content="grpc"><meta name="author" content="echo"><meta name="copyright" content="echo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Protocol Buffer route guide文章主要内容为介绍使用golang protocol buffer的安装与使用，参考资料有ProtocolBuffer,GRPC route guide。 安装可以去protoclbuffer官网直接下载安装，也可以使用homebrew这类工具直接安装。 1brew install protoc  此时安装好的是通用件，之后我们再来安装gola">
+<meta property="og:type" content="article">
+<meta property="og:title" content="protocbufferRouteGuide">
+<meta property="og:url" content="http://example.com/2021/10/26/protocbufferRouteGuide/index.html">
+<meta property="og:site_name" content="echo">
+<meta property="og:description" content="Protocol Buffer route guide文章主要内容为介绍使用golang protocol buffer的安装与使用，参考资料有ProtocolBuffer,GRPC route guide。 安装可以去protoclbuffer官网直接下载安装，也可以使用homebrew这类工具直接安装。 1brew install protoc  此时安装好的是通用件，之后我们再来安装gola">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://p0.qhimg.com/bdr/__85/t0138eef7cb30891e4b.jpg">
+<meta property="article:published_time" content="2021-10-26T06:58:27.000Z">
+<meta property="article:modified_time" content="2021-10-26T08:04:14.633Z">
+<meta property="article:author" content="echo">
+<meta property="article:tag" content="grpc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://p0.qhimg.com/bdr/__85/t0138eef7cb30891e4b.jpg"><link rel="shortcut icon" href="http://p8.qhimg.com/bdm/800_600_100/t012b0a4dba0add8b86.jpg"><link rel="canonical" href="http://example.com/2021/10/26/protocbufferRouteGuide/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-10-26 16:04:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'true'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1602674028&amp;di=d172ead1852b69507d79279bf80efc54&amp;imgtype=jpg&amp;er=1&amp;src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202009%2F15%2F20200915202836_6632b.thumb.1000_0.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">51</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">20</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Protocol-Buffer-route-guide"><span class="toc-number">1.</span> <span class="toc-text">Protocol Buffer route guide</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">基础使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="toc-number">3.1.</span> <span class="toc-text">基本控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">使用语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="toc-number">3.3.</span> <span class="toc-text">默认值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#repeated"><span class="toc-number">3.4.</span> <span class="toc-text">repeated</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Complied"><span class="toc-number">4.</span> <span class="toc-text">Complied</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="toc-number">5.</span> <span class="toc-text">字段对照表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Trivial-type"><span class="toc-number">5.1.</span> <span class="toc-text">Trivial type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Message"><span class="toc-number">5.2.</span> <span class="toc-text">Message</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Repeated"><span class="toc-number">5.3.</span> <span class="toc-text">Repeated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapFields"><span class="toc-number">5.4.</span> <span class="toc-text">MapFields</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OneofFields"><span class="toc-number">5.5.</span> <span class="toc-text">OneofFields</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumerations"><span class="toc-number">5.6.</span> <span class="toc-text">Enumerations</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FQA"><span class="toc-number">6.</span> <span class="toc-text">FQA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E4%B8%8D%E5%90%8C%E7%A7%8D%E7%B1%BB%E7%9A%84%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%EF%BC%8C%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9F"><span class="toc-number">6.1.</span> <span class="toc-text">对于不同种类的消息类型，应该如何使用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFprotocbuffer%E7%9A%84%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B%E5%86%B2%E7%AA%81%EF%BC%9F"><span class="toc-number">6.2.</span> <span class="toc-text">什么是protocbuffer的命名空间类型冲突？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BF%AE%E5%A4%8D%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%86%B2%E7%AA%81%EF%BC%9F"><span class="toc-number">6.3.</span> <span class="toc-text">如何修复命名空间冲突？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD"><span class="toc-number">7.</span> <span class="toc-text">后续</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://p0.qhimg.com/bdr/__85/t0138eef7cb30891e4b.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">echo</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">protocbufferRouteGuide</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-26T06:58:27.000Z" title="发表于 2021-10-26 14:58:27">2021-10-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-26T08:04:14.633Z" title="更新于 2021-10-26 16:04:14">2021-10-26</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="Protocol-Buffer-route-guide"><a href="#Protocol-Buffer-route-guide" class="headerlink" title="Protocol Buffer route guide"></a>Protocol Buffer route guide</h1><p>文章主要内容为介绍使用golang protocol buffer的安装与使用，参考资料有<a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers">ProtocolBuffer</a>,<a target="_blank" rel="noopener" href="https://grpc.io/docs/languages/go">GRPC route guide</a>。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>可以去<a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers">protoclbuffer</a>官网直接下载安装，也可以使用homebrew这类工具直接安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install protoc</span><br></pre></td></tr></table></figure>
+
+<p>此时安装好的是通用件，之后我们再来安装golang的编译插件protoc-gen-go</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install protoc-gen-go</span><br></pre></td></tr></table></figure>
+
+<p>或者是使用golang自带的工具进行安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go install google.golang.org/protobuf/cmd/protoc-gen-go@latest</span><br></pre></td></tr></table></figure>
+
+<h1 id="基础使用"><a href="#基础使用" class="headerlink" title="基础使用"></a>基础使用</h1><h2 id="基本控制"><a href="#基本控制" class="headerlink" title="基本控制"></a>基本控制</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">&quot;proto3&quot;</span>; <span class="comment">// 指定版本协议，此处使用的是3的协议</span></span><br><span class="line"><span class="keyword">package</span> tutorial; <span class="comment">// 指定包名，golang中似乎不起作用</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;google/protobuf/timestamp.proto&quot;</span>; <span class="comment">//导入相关文件，支持分布式导入</span></span><br><span class="line"><span class="keyword">option</span> go_package = <span class="string">&quot;github.com/protocolbuffers/protobuf/examples/go/tutorialpb&quot;</span>; <span class="comment">// 创建目录</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用语法"><a href="#使用语法" class="headerlink" title="使用语法"></a>使用语法</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Person</span> </span>&#123; <span class="comment">// 定义消息类型，会被特定的语言转化为特定类型，例如cpp是转译成class，golang是struct</span></span><br><span class="line">  <span class="built_in">string</span> name = <span class="number">1</span>; <span class="comment">//独特的消息id(tag)，在传输时使用，次字段在同一个级别中不可重复</span></span><br><span class="line">  <span class="built_in">int32</span> id = <span class="number">2</span>;  <span class="comment">// Unique ID number for this person.</span></span><br><span class="line">  <span class="built_in">string</span> email = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">PhoneType</span> </span>&#123; <span class="comment">//枚举类型，golang中是int32</span></span><br><span class="line">    MOBILE = <span class="number">0</span>;</span><br><span class="line">    HOME = <span class="number">1</span>;</span><br><span class="line">    WORK = <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">message</span> <span class="title">PhoneNumber</span> </span>&#123;</span><br><span class="line">    <span class="built_in">string</span> number = <span class="number">1</span>; <span class="comment">// 字符串类型，不同语言翻译不同，golang中就是string</span></span><br><span class="line">    PhoneType type = <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">repeated</span> PhoneNumber phones = <span class="number">4</span>;<span class="comment">//使用repeated标记为可重复字段，golang中表示为数组</span></span><br><span class="line"></span><br><span class="line">  google.protobuf.Timestamp last_updated = <span class="number">5</span>; <span class="comment">// 其他包导入字段</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Our address book file is just one of these.</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">AddressBook</span> </span>&#123;</span><br><span class="line">  <span class="keyword">repeated</span> Person people = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在以上例子中，我们注意到<strong>Person</strong>类型中包含了枚举类型<strong>PhoneType</strong>以及<strong>PhoneNumber</strong>类型，不难发现protoc是支持内置类型的。并且内置类型的每个字段(field)的tag都是唯一的，因为传输过程以字段作为标识而不是名字。</p>
+<p>并且为例节省字节数在1-15字段中为常用字段，他们在传输时只需要占用1byte的空间，16及以后的字段会占用2byte以上的空间。因此我们要尽量使用小的字段。</p>
+<h2 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h2><p>在integer类型中，字段的默认值为0，string的默认值为空字符串，bool类型的默认值为false。</p>
+<h2 id="repeated"><a href="#repeated" class="headerlink" title="repeated"></a>repeated</h2><p>如果字段被标记为repeated，那么protocol buffer会将其解析为对应类型的动态数组。</p>
+<h1 id="Complied"><a href="#Complied" class="headerlink" title="Complied"></a>Complied</h1><p>编译对应语言的桩代码，需要对应的插件(golang插件默认安装在GOBIN文件夹中)，例如编译成go语言的代码，会默认生成filename.pb.go的桩文件。</p>
+<p>编译</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc -I=$SRC_DIR --go_out=$DST_DIR $SRC_DIR/addressbook.proto</span><br></pre></td></tr></table></figure>
+
+<p>例如要编译helloworld文件夹中的hello world.proto，我们可以使用以下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --proto_path=helloworld --go_out=helloworld helloworld/helloworld.proto</span><br></pre></td></tr></table></figure>
+
+<p>其中 <strong>–proto_path</strong>指定源文件路径，**–go_out<strong>为要输出的桩代码类型，如果要输出cpp类型的桩代码则使用</strong>–cpp_out**</p>
+<p>后面跟的是生产文件的输出路径，最后跟的是要编译的文件。因为要编译的文件可能会有依赖文件，因此最开始得指明源文件路径，用于解决依赖。</p>
+<p>由于需要编译的文件可能会有相当多的依赖，因此在编译时会以<strong>最后指定的输出文件为有限选择</strong>。</p>
+<h1 id="字段对照表"><a href="#字段对照表" class="headerlink" title="字段对照表"></a>字段对照表</h1><h2 id="Trivial-type"><a href="#Trivial-type" class="headerlink" title="Trivial type"></a>Trivial type</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">optional</span> <span class="built_in">int32</span> foo = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">required</span> <span class="built_in">int32</span> foo = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int32</span> foo = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Message"><a href="#Message" class="headerlink" title="Message"></a>Message</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Bar</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Baz <span class="keyword">struct</span> &#123;</span><br><span class="line">        Foo *Bar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Repeated"><a href="#Repeated" class="headerlink" title="Repeated"></a>Repeated</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Baz</span> </span>&#123;</span><br><span class="line">  <span class="keyword">repeated</span> Bar foo = <span class="number">1</span>; <span class="comment">//可重复</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Baz <span class="keyword">struct</span> &#123;</span><br><span class="line">        Foo  []*Bar <span class="comment">//对应动态数组</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>初始化方式</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">baz := &amp;Baz&#123;</span><br><span class="line">  Foo: []*Bar&#123;</span><br><span class="line">    &#123;&#125;, <span class="comment">// First element.</span></span><br><span class="line">    &#123;&#125;, <span class="comment">// Second element.</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MapFields"><a href="#MapFields" class="headerlink" title="MapFields"></a>MapFields</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Bar</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Baz</span> </span>&#123;</span><br><span class="line">  map&lt;<span class="built_in">string</span>, Bar&gt; foo = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Baz <span class="keyword">struct</span> &#123;</span><br><span class="line">        Foo <span class="keyword">map</span>[<span class="keyword">string</span>]*Bar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="OneofFields"><a href="#OneofFields" class="headerlink" title="OneofFields"></a>OneofFields</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Profile</span> </span>&#123;</span><br><span class="line">  <span class="keyword">oneof</span> avatar &#123;</span><br><span class="line">    <span class="built_in">string</span> image_url = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">bytes</span> image_data = <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Profile <span class="keyword">struct</span> &#123;</span><br><span class="line">        <span class="comment">// Types that are valid to be assigned to Avatar:</span></span><br><span class="line">        <span class="comment">//      *Profile_ImageUrl</span></span><br><span class="line">        <span class="comment">//      *Profile_ImageData</span></span><br><span class="line">        Avatar isProfile_Avatar <span class="string">`protobuf_oneof:&quot;avatar&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Profile_ImageUrl <span class="keyword">struct</span> &#123;</span><br><span class="line">        ImageUrl <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Profile_ImageData <span class="keyword">struct</span> &#123;</span><br><span class="line">        ImageData []<span class="keyword">byte</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Enumerations"><a href="#Enumerations" class="headerlink" title="Enumerations"></a>Enumerations</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Corpus</span> </span>&#123;</span><br><span class="line">    UNIVERSAL = <span class="number">0</span>;</span><br><span class="line">    WEB = <span class="number">1</span>;</span><br><span class="line">    IMAGES = <span class="number">2</span>;</span><br><span class="line">    LOCAL = <span class="number">3</span>;</span><br><span class="line">    NEWS = <span class="number">4</span>;</span><br><span class="line">    PRODUCTS = <span class="number">5</span>;</span><br><span class="line">    VIDEO = <span class="number">6</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">enum Foo &#123; <span class="comment">// type Foo int32</span></span><br><span class="line">  DEFAULT_BAR = <span class="number">0</span>;</span><br><span class="line">  BAR_BELLS = <span class="number">1</span>;</span><br><span class="line">  BAR_B_CUE = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="FQA"><a href="#FQA" class="headerlink" title="FQA"></a>FQA</h1><h2 id="对于不同种类的消息类型，应该如何使用？"><a href="#对于不同种类的消息类型，应该如何使用？" class="headerlink" title="对于不同种类的消息类型，应该如何使用？"></a>对于不同种类的消息类型，应该如何使用？</h2><p><a target="_blank" rel="noopener" href="https://pkg.go.dev/google.golang.org/protobuf/proto?tab=doc#Message"><code>&quot;google.golang.org/protobuf/proto&quot;</code></a>消息是由协议缓冲区编译器的当前版本生成的所有消息实现的接口类型。对任意消息（如proto.Marshal或proto.Clone）进行操作的函数接受或返回此类型。</p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect?tab=doc#Message"><code>&quot;google.golang.org/protobuf/reflect/protoreflect&quot;</code></a>Message是描述消息的反射视图的接口类型。对proto.Message调用ProtoReflect方法以获取Protorefect.Message。</p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect?tab=doc#ProtoMessage"><code>&quot;google.golang.org/protobuf/reflect/protoreflect&quot;</code></a><a target="_blank" rel="noopener" href="https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect?tab=doc#ProtoMessage"><code>ProtoMessage</code></a>是”google.golang.org/protobuf/proto”.Message`.的别名，两种消息类型可以互换。</p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/github.com/golang/protobuf/proto?tab=doc#Message"><code>&quot;github.com/golang/protobuf/proto&quot;.</code></a>消息是由传统GO协议缓冲区API定义的接口类型。所有生成的消息类型都实现此接口，但该接口不描述这些消息的预期行为。新代码应避免使用此类型。</p>
+<h2 id="什么是protocbuffer的命名空间类型冲突？"><a href="#什么是protocbuffer的命名空间类型冲突？" class="headerlink" title="什么是protocbuffer的命名空间类型冲突？"></a>什么是protocbuffer的命名空间类型冲突？</h2><p>protocbuffer生成的桩代码都会链接到GO二进制的所有协议缓冲区声明都插入到全局注册表中。每个Protobuf声明(例如枚举、枚举值或消息)都有一个绝对名称，它是包名与.proto源文件中声明的相对名称(例如my.Proto.Package.MyMessage.NestedMessage)的串联。Protobuf语言假定所有声明都是全局唯一的。如果链接到GO二进制文件的两个Protobuf声明具有相同的名称，则会导致名称空间冲突，并且注册表不可能按名称正确解析该声明。根据所使用的GO协议错误的版本，这要么会在初始时失败，或者静默地丢弃冲突，并在以后的运行时可能会导致潜在的错误。</p>
+<h2 id="如何修复命名空间冲突？"><a href="#如何修复命名空间冲突？" class="headerlink" title="如何修复命名空间冲突？"></a>如何修复命名空间冲突？</h2><p>最好方法是人为的更换类型的命名。当然也可以使用以下方法。</p>
+<p>当单个.proto文件生成到两个或多个GO包中并链接到相同的GO二进制文件中时，它会在生成的GO包中的每个Protobuf声明上发生冲突。这通常发生在.proto文件被提供并从中生成GO包，或者生成的GO包本身被提供时。用户应避免提供服务，而应依赖于该.proto文件的集中式GO包。</p>
+<h1 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h1><p>FAQ写不下了，更多请看原文<a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers/docs/reference/go/faq"><a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers">Protocol Buffers</a></a></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">echo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/10/26/protocbufferRouteGuide/">http://example.com/2021/10/26/protocbufferRouteGuide/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">echo</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/grpc/">grpc</a></div><div class="post_share"><div class="social-share" data-image="http://p0.qhimg.com/bdr/__85/t0138eef7cb30891e4b.jpg" data-sites="wechat,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/10/20/golang%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B03/"><img class="next-cover" src="http://p7.qhimg.com/bdm/0_0_100/t01182f36e81bbe7e41.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">golang实战笔记3</div></div></a></div></nav></article></main><footer id="footer" style="background-image: url(http://p0.qhimg.com/bdr/__85/t0138eef7cb30891e4b.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By echo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":350},"mobile":{"show":true},"log":false});</script></body></html>
