@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>cpp实用小技巧 | echo</title><meta name="keywords" content="cpp"><meta name="author" content="echo"><meta name="copyright" content="echo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="assert &amp; static_assert问题来源：statkoverflow What is the difference between assert and static_assert?以下回答是对其的翻译 问题描述我知道static_assert 是发生在编译期，assert是发生在运行时，那他们有什么不同呢？为什么不能使用if来检查呢？同样的问题我可以使用 1234if(con">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp实用小技巧">
+<meta property="og:url" content="http://example.com/2021/11/07/cpp%E5%AE%9E%E7%94%A8%E5%B0%8F%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="echo">
+<meta property="og:description" content="assert &amp; static_assert问题来源：statkoverflow What is the difference between assert and static_assert?以下回答是对其的翻译 问题描述我知道static_assert 是发生在编译期，assert是发生在运行时，那他们有什么不同呢？为什么不能使用if来检查呢？同样的问题我可以使用 1234if(con">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://p0.qhimg.com/bdm/0_0_100/t01346ba3346ce534a0.jpg">
+<meta property="article:published_time" content="2021-11-07T09:47:29.000Z">
+<meta property="article:modified_time" content="2021-11-08T12:06:06.603Z">
+<meta property="article:author" content="echo">
+<meta property="article:tag" content="cpp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://p0.qhimg.com/bdm/0_0_100/t01346ba3346ce534a0.jpg"><link rel="shortcut icon" href="http://p8.qhimg.com/bdm/800_600_100/t012b0a4dba0add8b86.jpg"><link rel="canonical" href="http://example.com/2021/11/07/cpp%E5%AE%9E%E7%94%A8%E5%B0%8F%E6%8A%80%E5%B7%A7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-11-08 20:06:06'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'true'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1602674028&amp;di=d172ead1852b69507d79279bf80efc54&amp;imgtype=jpg&amp;er=1&amp;src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202009%2F15%2F20200915202836_6632b.thumb.1000_0.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">53</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">21</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#assert-amp-static-assert"><span class="toc-number">1.</span> <span class="toc-text">assert &amp; static_assert</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%9D%A5%E6%BA%90%EF%BC%9Astatkoverflow-What-is-the-difference-between-assert-and-static-assert"><span class="toc-number">1.1.</span> <span class="toc-text">问题来源：statkoverflow What is the difference between assert and static_assert?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.2.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#answer"><span class="toc-number">1.3.</span> <span class="toc-text">answer</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#const-int-amp-int-const"><span class="toc-number">2.</span> <span class="toc-text">const int* &amp; int const*</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%9D%A5%E6%BA%90-stack-overflow-What-is-the-difference-between-const-int-const-int-const-and-int-const"><span class="toc-number">2.1.</span> <span class="toc-text">问题来源: stack overflow What is the difference between const int*, const int * const, and int const *?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%BA%E6%97%B6%E9%92%88%E8%9E%BA%E6%97%8B%E6%B3%95%E5%88%99-Clockwise-Spiral-Rule"><span class="toc-number">2.2.</span> <span class="toc-text">顺时针螺旋法则 Clockwise&#x2F;Spiral Rule</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="toc-number">2.2.1.</span> <span class="toc-text">使用规则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E8%A7%84%E5%88%99"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">解析规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%9E%BA%E6%97%8B%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">螺旋解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%AC%E5%8F%B7%E4%BC%98%E5%85%88"><span class="toc-number">2.2.1.3.</span> <span class="toc-text">括号优先</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B1-%E7%AE%80%E5%8D%95%E7%9A%84%E7%AC%A6%E5%8F%B7%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.2.</span> <span class="toc-text">案例1 简单的符号解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B2-%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.3.</span> <span class="toc-text">案例2 函数指针解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B3-%E7%A9%B6%E6%9E%81%E5%A4%8D%E6%9D%82%E7%B1%BB%E5%9E%8B%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.4.</span> <span class="toc-text">案例3 究极复杂类型解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const-int-amp-int-const-amp-const-int-const"><span class="toc-number">2.3.</span> <span class="toc-text">const int* &amp; int* const &amp; const int * const</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#const-int-value%EF%BC%9B"><span class="toc-number">2.3.1.</span> <span class="toc-text">const int * value；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#int-const-value"><span class="toc-number">2.3.2.</span> <span class="toc-text">int* const value;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#const-int-const-value%EF%BC%9B"><span class="toc-number">2.3.3.</span> <span class="toc-text">const int* const value；</span></a></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://p0.qhimg.com/bdm/0_0_100/t01346ba3346ce534a0.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">echo</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.bilibili.com/"><i class="fa-fw fas fa-link"></i><span> 友鏈</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">cpp实用小技巧</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-07T09:47:29.000Z" title="发表于 2021-11-07 17:47:29">2021-11-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-08T12:06:06.603Z" title="更新于 2021-11-08 20:06:06">2021-11-08</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="assert-amp-static-assert"><a href="#assert-amp-static-assert" class="headerlink" title="assert &amp; static_assert"></a>assert &amp; static_assert</h1><h2 id="问题来源：statkoverflow-What-is-the-difference-between-assert-and-static-assert"><a href="#问题来源：statkoverflow-What-is-the-difference-between-assert-and-static-assert" class="headerlink" title="问题来源：statkoverflow What is the difference between assert and static_assert?"></a>问题来源：statkoverflow <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18210270/what-is-the-difference-between-assert-and-static-assert">What is the difference between assert and static_assert?</a></h2><p>以下回答是对其的翻译</p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>我知道static_assert 是发生在编译期，assert是发生在运行时，那他们有什么不同呢？为什么不能使用if来检查呢？同样的问题我可以使用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(condition == <span class="literal">false</span>) &#123;</span><br><span class="line">  print(message);</span><br><span class="line">  <span class="built_in">exit</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><p1>有什么例子是只能使用assert或者static_assert的呢？</p1></p>
+<p><p1>明明使用if更为简单为什么不实用if呢？</p1></p>
+</blockquote>
+<h2 id="answer"><a href="#answer" class="headerlink" title="answer"></a>answer</h2><blockquote>
+<p><p1>只能使用static_assert的情况</p1></p>
+<p>但程序中的逻辑需要在编译期检查是否存在问题时，只能使用static_assert，因为此时if和assert还不能运行。</p>
+<p><p1>使用assert的情况</p1></p>
+<p>当你需要检查运行时代码是否有应该返回为一值的地方返回了预期之外的值，例如你要检查某个时刻某个位置的pointer的值是否为null，这个时候应该使用assert,为什么不是if呢？因为逻辑检查应该是存在于debug阶段的事情，在release时我们应该去除这类检查机制，如果使用if的话我们没有一个有效且快速去除它的方式。</p>
+</blockquote>
+<h1 id="const-int-amp-int-const"><a href="#const-int-amp-int-const" class="headerlink" title="const int* &amp; int const*"></a>const int* &amp; int const*</h1><h2 id="问题来源-stack-overflow-What-is-the-difference-between-const-int-const-int-const-and-int-const"><a href="#问题来源-stack-overflow-What-is-the-difference-between-const-int-const-int-const-and-int-const" class="headerlink" title="问题来源: stack overflow What is the difference between const int*, const int * const, and int const *?"></a>问题来源: stack overflow <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1143262/what-is-the-difference-between-const-int-const-int-const-and-int-const">What is the difference between const int*, const int * const, and int const *?</a></h2><p>这确实是在我还是一个初学者的时候一直困扰着我的问题，到现在凭借经验倒是能区分这一问题，例如看const修饰的是type还是<em>，当const修饰type是，那么这个value就是constant(不可变的)，如果修饰的是\</em>那么这个这个pointer就是不可变的。但是如果遇到如下定义，我还是要蒙好久或者干脆看不懂。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*signal(<span class="keyword">int</span>, <span class="keyword">void</span> (*fp)(<span class="keyword">int</span>)))(<span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
+
+<p>现在，有一个通用的解法能解释这个问题，原创作者是David Anderson，是早期C编译器的作者之一，以下内容是对其文章的翻译。</p>
+<p>原文链接:<a target="_blank" rel="noopener" href="http://c-faq.com/decl/spiral.anderson.html">The ``Clockwise/Spiral Rule’’</a></p>
+<h2 id="顺时针螺旋法则-Clockwise-Spiral-Rule"><a href="#顺时针螺旋法则-Clockwise-Spiral-Rule" class="headerlink" title="顺时针螺旋法则 Clockwise/Spiral Rule"></a>顺时针螺旋法则 Clockwise/Spiral Rule</h2><p>这是一个关于C/C++类型声明的通用解释法则。</p>
+<h3 id="使用规则"><a href="#使用规则" class="headerlink" title="使用规则"></a>使用规则</h3><p>最开始我们并不知道如何去解析这一元素，通过顺时针螺旋法则，我们可以将相关的类型声明翻译成通顺的中文句子(english statements),只需要通过如下三步</p>
+<h4 id="解析规则"><a href="#解析规则" class="headerlink" title="解析规则"></a>解析规则</h4><blockquote>
+<p>[X] or []</p>
+<p>​    ==&gt;一个包含元素数量为X的数组</p>
+<p>(type1,type2)</p>
+<p>​    ==&gt;传递参数为type1和type2返回值为…的函数</p>
+<p>*</p>
+<p>​    ==&gt;指向类型为…的指针</p>
+</blockquote>
+<h4 id="螺旋解析"><a href="#螺旋解析" class="headerlink" title="螺旋解析"></a>螺旋解析</h4><blockquote>
+<p>遵守顺时针螺旋法则直到所有的类型被解析完成</p>
+</blockquote>
+<h4 id="括号优先"><a href="#括号优先" class="headerlink" title="括号优先"></a>括号优先</h4><blockquote>
+<p>总是先解析括号内的所有类型</p>
+</blockquote>
+<h3 id="案例1-简单的符号解析"><a href="#案例1-简单的符号解析" class="headerlink" title="案例1 简单的符号解析"></a>案例1 简单的符号解析</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">     +-------+</span><br><span class="line">     | +-+   |</span><br><span class="line">     | ^ |   |</span><br><span class="line">&gt;char *str[10];</span><br><span class="line"> ^   ^   |   |</span><br><span class="line"> |   +---+   |</span><br><span class="line"> +-----------+</span><br></pre></td></tr></table></figure>
+
+<p>根据如上提到的顺时针螺旋法则，我们知道先解析*[*，那么此处就应该是：</p>
+<p><strong>str是一个长度为10的数组</strong>。</p>
+<p>再接着旋转到了左边，我们遇到了*****,那此时再加上pointer就应该是：</p>
+<p><strong>str是一个长度为10的数组并且它的元素类型为指针类型</strong>。</p>
+<p>再接着旋转到右边，我们遇见了<strong>；</strong>，不解释，咱继续旋转遇到了char，那么此时就应该是：</p>
+<p><strong>str是一个长度为10的数组并且它的数据类型为指针类型，指针指向的元素类型为char</strong>。</p>
+</blockquote>
+<h3 id="案例2-函数指针解析"><a href="#案例2-函数指针解析" class="headerlink" title="案例2 函数指针解析"></a>案例2 函数指针解析</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *(*fp)( <span class="keyword">int</span>, <span class="keyword">float</span> *);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<pre><code>                +--------------------+
+                | +---+              |
+                | |+-+|              |
+                | |^ ||              |
+           char *(*fp)( int, float *);
+            ^   ^ ^  ||              |
+            |   | +--+|              |
+            |   +-----+              |
+            +------------------------+</code></pre>
+<p>我们先看()内，看见了一个*，那么fp就应该是：</p>
+<p><strong>一个指向类型待定的指针类型</strong></p>
+<p>接着旋转，我们又遇见了一个()，按照规则，优先解析()内的元素，那么fp就应该是：</p>
+<p><strong>一个指向函数的指针类型，该函数的参数有int，float，且返回值类型待定</strong></p>
+<p>接着旋转，我们遇到一个*，按照规则，那么fp就应该是：</p>
+<p><strong>一个指向函数的指针类型，该函数的参数有int，float，且返回值是指针类型，指向类型待定</strong></p>
+<p>继续旋转，遇到；，忽略，继续旋转，遇到了char，那么fp就应该是：</p>
+<p><strong>一个指向函数的指针类型，该函数的参数有int，float，且返回值是指针，指针指向的元素类型为char</strong></p>
+</blockquote>
+<h3 id="案例3-究极复杂类型解析"><a href="#案例3-究极复杂类型解析" class="headerlink" title="案例3 究极复杂类型解析"></a>案例3 究极复杂类型解析</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*signal(<span class="keyword">int</span>, <span class="keyword">void</span> (*fp)(<span class="keyword">int</span>)))(<span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">      +-----------------------------+</span><br><span class="line">      |                  +---+      |</span><br><span class="line">      |  +---+           |+-+|      |</span><br><span class="line">      |  ^   |           |^ ||      |</span><br><span class="line">void (*signal(int, void (*fp)(int)))(int);</span><br><span class="line"> ^    ^      |      ^    ^  ||      |</span><br><span class="line"> |    +------+      |    +--+|      |</span><br><span class="line"> |                  +--------+      |</span><br><span class="line"> +----------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p>首先我们看见了一个*，那signal应该是：</p>
+<p><strong>一个指针类型，且指向类型待定</strong></p>
+<p>然后我们又看见了一个fp（fp也在括号内），fp的类型是*，那么fp应该是：</p>
+<p><strong>一个指针类型，且指向类型待定</strong></p>
+<p>之后呢又看见了一个(),里面有一个int，那不出意外这fp应该是：</p>
+<p><strong>一个指针类型，且指向函数类型为参数类型为int，返回值类型待定</strong></p>
+<p>这是括号完了(signal里的括号完了)，与fp相邻的还有void，因此确定了其返回值，这是fp应该是：</p>
+<p><strong>一个指针类型，且指向函数类型为参数类型为int，返回值类型为void</strong></p>
+<p>因为signal里面还有一个int，在加上去signal就应该是：</p>
+<p><strong>一个指针类型，且指向的函数第一个参数是int，第二个参数是一个指针类型，且指向函数类型为参数类型为int，返回值类型为void的函数指针</strong>。</p>
+<p>接着我们到了括号外面，我们又遇见了一个括号(int),那此时依旧解读成函数指针，由于篇幅原因我们快一点(带上void),那么signal就应该是：</p>
+<p><strong>一个指针类型，且指向的函数第一个参数是int，第二个参数是一个指针类型，且指向函数类型为参数类型为int，返回值类型为void的函数指针，且signal该函数指针的返回值是一个参数类型为int，返回值为void的函数指针类型</strong></p>
+</blockquote>
+<h2 id="const-int-amp-int-const-amp-const-int-const"><a href="#const-int-amp-int-const-amp-const-int-const" class="headerlink" title="const int* &amp; int* const &amp; const int * const"></a>const int* &amp; int* const &amp; const int * const</h2><p>根据以上规则，我们再来解读最开始的问题</p>
+<h3 id="const-int-value；"><a href="#const-int-value；" class="headerlink" title="const int * value；"></a>const int * value；</h3><blockquote>
+<p>value一个指针类型，且指向类型类型为int，并且这个int是一个const(常量)</p>
+</blockquote>
+<h3 id="int-const-value"><a href="#int-const-value" class="headerlink" title="int* const value;"></a>int* const value;</h3><blockquote>
+<p>value是一个const(常量),并且是一个指针类型，也就是常量指针类型，这个指针类型指向的类型是int</p>
+</blockquote>
+<h3 id="const-int-const-value；"><a href="#const-int-const-value；" class="headerlink" title="const int* const value；"></a>const int* const value；</h3><blockquote>
+<p>value是一个const(常量),并且是一个指针类型，也就是常量指针类型，这个指针类型指向的类型是int，这个int也是一个常量。</p>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">echo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/11/07/cpp%E5%AE%9E%E7%94%A8%E5%B0%8F%E6%8A%80%E5%B7%A7/">http://example.com/2021/11/07/cpp%E5%AE%9E%E7%94%A8%E5%B0%8F%E6%8A%80%E5%B7%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">echo</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/cpp/">cpp</a></div><div class="post_share"><div class="social-share" data-image="http://p0.qhimg.com/bdm/0_0_100/t01346ba3346ce534a0.jpg" data-sites="wechat,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/10/30/GRPCrouteGuide/"><img class="next-cover" src="http://p8.qhimg.com/bdr/__85/t01074f539ac309deb3.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">GRPCrouteGuide</div></div></a></div></nav></article></main><footer id="footer" style="background-image: url(http://p0.qhimg.com/bdm/0_0_100/t01346ba3346ce534a0.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By echo</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":350},"mobile":{"show":true},"log":false});</script></body></html>
